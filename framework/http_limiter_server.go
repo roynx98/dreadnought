@@ -9,7 +9,11 @@ import (
 	"net/url"
 )
 
-func StartLimiterServer(targetHost *url.URL) {
+type HttpLimiterServer struct {
+	LimiterController adapters.LimiterController
+}
+
+func (server HttpLimiterServer) Start(targetHost *url.URL) {
 	proxy := httputil.NewSingleHostReverseProxy(targetHost)
 	limiterController := adapters.LimiterController{}
 
@@ -32,5 +36,8 @@ func StartLimiterServer(targetHost *url.URL) {
 
 	log.Println("Reverse proxy running on :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
+}
 
+func ProvideLimiterServer(limiterController adapters.LimiterController) HttpLimiterServer {
+	return HttpLimiterServer{LimiterController: limiterController}
 }

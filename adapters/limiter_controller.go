@@ -14,3 +14,7 @@ type LimiterController struct {
 func (r LimiterController) HandleRequest(LimiterControllerRequest) LimiterControllerResponse {
 	return LimiterControllerResponse{Code: 200}
 }
+
+func ProvideLimiterController() LimiterController {
+	return LimiterController{}
+}
