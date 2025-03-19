@@ -2,7 +2,6 @@ package networking
 
 import (
 	"adeptus-limitarius/adapters"
-	"fmt"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -22,11 +21,9 @@ func (server HttpLimiterServer) Start(targetHost *url.URL) {
 
 		limiterRequest := adapters.LimiterControllerRequest{IP: r.RemoteAddr}
 
-		response := limiterController.HandleRequest(limiterRequest)
+		shouldLimit := limiterController.HandleRequest(limiterRequest)
 
-		fmt.Println(response)
-
-		if response.Code != 200 {
+		if shouldLimit {
 			http.Error(w, "Rate limit exceeded", http.StatusTooManyRequests)
 			return
 		}

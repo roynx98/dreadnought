@@ -1,5 +1,7 @@
 package adapters
 
+import "adeptus-limitarius/cases"
+
 type LimiterControllerRequest struct {
 	IP string
 }
@@ -9,12 +11,15 @@ type LimiterControllerResponse struct {
 }
 
 type LimiterController struct {
+	iteractor cases.LimiterInteractor
 }
 
-func (r LimiterController) HandleRequest(LimiterControllerRequest) LimiterControllerResponse {
-	return LimiterControllerResponse{Code: 200}
+func (controller LimiterController) HandleRequest(LimiterControllerRequest) bool {
+	rule := cases.LimitRule{IP: "1.1.1.1"}
+
+	return controller.iteractor.ShouldLimit(rule)
 }
 
-func ProvideLimiterController() LimiterController {
-	return LimiterController{}
+func ProvideLimiterController(interactor cases.LimiterInteractor) LimiterController {
+	return LimiterController{iteractor: interactor}
 }

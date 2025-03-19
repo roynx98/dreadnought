@@ -8,13 +8,15 @@ package framework
 
 import (
 	"adeptus-limitarius/adapters"
+	"adeptus-limitarius/cases"
 	"adeptus-limitarius/framework/networking"
 )
 
 // Injectors from wire.go:
 
 func InitializeApp() App {
-	limiterController := adapters.ProvideLimiterController()
+	limiterInteractor := cases.ProvideLimiterInteractor()
+	limiterController := adapters.ProvideLimiterController(limiterInteractor)
 	httpLimiterServer := networking.ProvideLimiterServer(limiterController)
 	app := ProvideApp(httpLimiterServer)
 	return app
