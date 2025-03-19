@@ -1,4 +1,4 @@
-package framework
+package networking
 
 import (
 	"adeptus-limitarius/adapters"

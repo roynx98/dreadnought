@@ -1,12 +1,13 @@
 package framework
 
 import (
+	"adeptus-limitarius/framework/networking"
 	"log"
 	"net/url"
 )
 
 type App struct {
-	server LimiterServer
+	server networking.LimiterServer
 }
 
 func (app App) Start() {
@@ -20,6 +21,6 @@ func (app App) Start() {
 	app.server.Start(target)
 }
 
-func ProvideApp(limiterServer LimiterServer) App {
+func ProvideApp(limiterServer networking.LimiterServer) App {
 	return App{server: limiterServer}
 }

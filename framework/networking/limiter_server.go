@@ -1,4 +1,4 @@
-package framework
+package networking
 
 import (
 	"net/url"
