@@ -7,6 +7,7 @@ import (
 	"adeptus-limitarius/adapters"
 	"adeptus-limitarius/cases"
 	"adeptus-limitarius/framework/networking"
+	"adeptus-limitarius/framework/strategies"
 
 	"github.com/google/wire"
 )
@@ -14,7 +15,7 @@ import (
 func InitializeApp() App {
 	wire.Build(
 		ProvideApp,
-		ProvideStrategiesRegistry,
+		strategies.ProvideStrategiesRegistry,
 		adapters.ProvideLimiterController,
 		networking.ProvideLimiterServer,
 		cases.ProvideLimiterInteractor,

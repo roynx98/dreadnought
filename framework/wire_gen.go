@@ -10,6 +10,7 @@ import (
 	"adeptus-limitarius/adapters"
 	"adeptus-limitarius/cases"
 	"adeptus-limitarius/framework/networking"
+	"adeptus-limitarius/framework/strategies"
 )
 
 // Injectors from wire.go:
@@ -19,7 +20,7 @@ func InitializeApp() App {
 	limiterInteractor := cases.ProvideLimiterInteractor(limiterMediator)
 	limiterController := adapters.ProvideLimiterController(limiterInteractor)
 	httpLimiterServer := networking.ProvideLimiterServer(limiterController)
-	strategiesRegistry := ProvideStrategiesRegistry(limiterMediator)
+	strategiesRegistry := strategies.ProvideStrategiesRegistry(limiterMediator)
 	app := ProvideApp(httpLimiterServer, strategiesRegistry)
 	return app
 }

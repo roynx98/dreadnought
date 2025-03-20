@@ -1,5 +1,9 @@
 package cases
 
+import (
+	"adeptus-limitarius/entities"
+)
+
 type LimitRule struct {
 	IP       string
 	Strategy string
@@ -7,7 +11,7 @@ type LimitRule struct {
 
 type LimiterInteractor struct {
 	mediator       LimiterMediator
-	activeLimiters *map[string]Limiter
+	activeLimiters *map[string]entities.Limiter
 }
 
 func (interactor LimiterInteractor) ShouldLimit(rule LimitRule) bool {
@@ -17,7 +21,7 @@ func (interactor LimiterInteractor) ShouldLimit(rule LimitRule) bool {
 	return false
 }
 
-func ProvideLimiterInteractor(mediaror LimiterMediator) LimiterInteractor {
-	limiters := make(map[string]Limiter)
-	return LimiterInteractor{activeLimiters: &limiters, mediator: mediaror}
+func ProvideLimiterInteractor(mediator LimiterMediator) LimiterInteractor {
+	limiters := make(map[string]entities.Limiter)
+	return LimiterInteractor{activeLimiters: &limiters, mediator: mediator}
 }

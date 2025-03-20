@@ -1,17 +1,17 @@
-package framework
+package strategies
 
 import (
 	"adeptus-limitarius/cases"
-	"adeptus-limitarius/framework/strategies"
+	"adeptus-limitarius/entities"
 )
 
 type StrategiesRegistry struct {
 	mediator cases.LimiterMediator
 }
 
-func (registry StrategiesRegistry) register() {
-	registry.mediator.RegisterCreationHandler("bucket", func() cases.Limiter {
-		return strategies.BucketLimiter{}
+func (registry StrategiesRegistry) Register() {
+	registry.mediator.RegisterCreationHandler("bucket", func() entities.Limiter {
+		return BucketLimiter{}
 	})
 }
 

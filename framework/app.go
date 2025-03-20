@@ -2,13 +2,14 @@ package framework
 
 import (
 	"adeptus-limitarius/framework/networking"
+	"adeptus-limitarius/framework/strategies"
 	"log"
 	"net/url"
 )
 
 type App struct {
 	server             networking.LimiterServer
-	strategiesRegistry StrategiesRegistry
+	strategiesRegistry strategies.StrategiesRegistry
 }
 
 func (app App) Start() {
@@ -19,11 +20,11 @@ func (app App) Start() {
 		log.Fatal(err)
 	}
 
-	app.strategiesRegistry.register()
+	app.strategiesRegistry.Register()
 
 	app.server.Start(target)
 }
 
-func ProvideApp(limiterServer networking.LimiterServer, strategiesRegistry StrategiesRegistry) App {
+func ProvideApp(limiterServer networking.LimiterServer, strategiesRegistry strategies.StrategiesRegistry) App {
 	return App{server: limiterServer, strategiesRegistry: strategiesRegistry}
 }
