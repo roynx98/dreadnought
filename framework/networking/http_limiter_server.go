@@ -2,6 +2,7 @@ package networking
 
 import (
 	"adeptus-limitarius/adapters"
+	"fmt"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -9,19 +10,19 @@ import (
 )
 
 type HttpLimiterServer struct {
-	LimiterController adapters.LimiterController
+	limiterController adapters.LimiterController
 }
 
 func (server HttpLimiterServer) Start(targetHost *url.URL) {
 	proxy := httputil.NewSingleHostReverseProxy(targetHost)
-	limiterController := adapters.LimiterController{}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		r.Host = targetHost.Host
 
+		fmt.Println("Request received")
 		limiterRequest := adapters.LimiterControllerRequest{IP: r.RemoteAddr}
 
-		shouldLimit := limiterController.HandleRequest(limiterRequest)
+		shouldLimit := server.limiterController.HandleRequest(limiterRequest)
 
 		if shouldLimit {
 			http.Error(w, "Rate limit exceeded", http.StatusTooManyRequests)
@@ -36,5 +37,5 @@ func (server HttpLimiterServer) Start(targetHost *url.URL) {
 }
 
 func ProvideLimiterServer(limiterController adapters.LimiterController) HttpLimiterServer {
-	return HttpLimiterServer{LimiterController: limiterController}
+	return HttpLimiterServer{limiterController: limiterController}
 }

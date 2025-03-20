@@ -15,9 +15,11 @@ import (
 // Injectors from wire.go:
 
 func InitializeApp() App {
-	limiterInteractor := cases.ProvideLimiterInteractor()
+	limiterMediator := cases.ProvideLimiterMediator()
+	limiterInteractor := cases.ProvideLimiterInteractor(limiterMediator)
 	limiterController := adapters.ProvideLimiterController(limiterInteractor)
 	httpLimiterServer := networking.ProvideLimiterServer(limiterController)
-	app := ProvideApp(httpLimiterServer)
+	strategiesRegistry := ProvideStrategiesRegistry(limiterMediator)
+	app := ProvideApp(httpLimiterServer, strategiesRegistry)
 	return app
 }

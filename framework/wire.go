@@ -14,9 +14,11 @@ import (
 func InitializeApp() App {
 	wire.Build(
 		ProvideApp,
+		ProvideStrategiesRegistry,
 		adapters.ProvideLimiterController,
 		networking.ProvideLimiterServer,
 		cases.ProvideLimiterInteractor,
+		cases.ProvideLimiterMediator,
 		wire.Bind(new(networking.LimiterServer), new(networking.HttpLimiterServer)),
 	)
 	return App{}

@@ -7,7 +7,8 @@ import (
 )
 
 type App struct {
-	server networking.LimiterServer
+	server             networking.LimiterServer
+	strategiesRegistry StrategiesRegistry
 }
 
 func (app App) Start() {
@@ -18,9 +19,11 @@ func (app App) Start() {
 		log.Fatal(err)
 	}
 
+	app.strategiesRegistry.register()
+
 	app.server.Start(target)
 }
 
-func ProvideApp(limiterServer networking.LimiterServer) App {
-	return App{server: limiterServer}
+func ProvideApp(limiterServer networking.LimiterServer, strategiesRegistry StrategiesRegistry) App {
+	return App{server: limiterServer, strategiesRegistry: strategiesRegistry}
 }
