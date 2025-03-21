@@ -7,18 +7,30 @@ import (
 )
 
 type BucketLimiter struct {
-	currentTokens atomic.Int32
-	maxTokens     int
+	currentTokens    *atomic.Int32
+	maxTokens        int32
+	refillRate       int
+	overflowCounter  int
+	overflowsToClose int
 }
 
-func (limiter *BucketLimiter) Start() {
-	ticker := time.NewTicker(5000 * time.Millisecond)
+func (limiter *BucketLimiter) Start(onDelete func()) {
+	ticker := time.NewTicker(time.Duration(limiter.refillRate) * time.Millisecond)
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				if limiter.currentTokens.Load() < int32(limiter.maxTokens) {
+				if limiter.currentTokens.Load() < limiter.maxTokens {
 					limiter.currentTokens.Add(1)
+					limiter.overflowCounter = 0
+				} else {
+					limiter.overflowCounter++
+				}
+
+				if limiter.overflowCounter >= limiter.overflowsToClose {
+					onDelete()
+					ticker.Stop()
+					return
 				}
 			}
 		}

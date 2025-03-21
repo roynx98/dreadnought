@@ -3,6 +3,7 @@ package strategies
 import (
 	"adeptus-limitarius/cases"
 	"adeptus-limitarius/entities"
+	"sync/atomic"
 )
 
 type StrategiesRegistry struct {
@@ -11,7 +12,10 @@ type StrategiesRegistry struct {
 
 func (registry StrategiesRegistry) Register() {
 	registry.mediator.RegisterCreationHandler("bucket", func() entities.Limiter {
-		return &BucketLimiter{}
+		const maxTokens = 2
+		var currentTokens atomic.Int32
+		currentTokens.Store(maxTokens)
+		return &BucketLimiter{currentTokens: &currentTokens, maxTokens: maxTokens, refillRate: 2000, overflowsToClose: 3}
 	})
 }
 

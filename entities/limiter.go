@@ -1,7 +1,7 @@
 package entities
 
 type Limiter interface {
-	Start()
+	Start(onDelete func())
 	ShouldLimit(rule LimitRule) bool
 }
 

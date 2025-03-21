@@ -16,7 +16,9 @@ func (interactor LimiterInteractor) ShouldLimit(rule entities.LimitRule) bool {
 		limiter = interactor.mediator.Create(rule.Strategy)
 		(*interactor.activeLimiters)[rule.IP] = limiter
 
-		limiter.Start()
+		limiter.Start(func() {
+			delete(*interactor.activeLimiters, rule.IP)
+		})
 	}
 
 	return limiter.ShouldLimit(rule)
