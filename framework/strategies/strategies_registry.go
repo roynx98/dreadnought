@@ -11,7 +11,7 @@ type StrategiesRegistry struct {
 
 func (registry StrategiesRegistry) Register() {
 	registry.mediator.RegisterCreationHandler("bucket", func() entities.Limiter {
-		return BucketLimiter{}
+		return &BucketLimiter{}
 	})
 }
 

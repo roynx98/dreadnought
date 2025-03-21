@@ -2,6 +2,7 @@ package adapters
 
 import (
 	"adeptus-limitarius/cases"
+	"adeptus-limitarius/entities"
 )
 
 type LimiterControllerRequest struct {
@@ -17,7 +18,7 @@ type LimiterController struct {
 }
 
 func (controller LimiterController) HandleRequest(LimiterControllerRequest) bool {
-	rule := cases.LimitRule{IP: "1.1.1.1", Strategy: "bucket"}
+	rule := entities.LimitRule{IP: "1.1.1.1", Strategy: "bucket"}
 
 	return controller.interactor.ShouldLimit(rule)
 }
