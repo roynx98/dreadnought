@@ -1,7 +1,7 @@
 package strategies
 
 import (
-	"adeptus-limitarius/entities"
+	"dreadnought/entities"
 	"sync/atomic"
 	"time"
 )

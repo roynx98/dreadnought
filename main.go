@@ -1,6 +1,6 @@
 package main
 
-import "adeptus-limitarius/framework"
+import "dreadnought/framework"
 
 func main() {
 	app := framework.InitializeApp()

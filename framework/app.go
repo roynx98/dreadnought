@@ -1,8 +1,8 @@
 package framework
 
 import (
-	"adeptus-limitarius/framework/networking"
-	"adeptus-limitarius/framework/strategies"
+	"dreadnought/framework/networking"
+	"dreadnought/framework/strategies"
 	"log"
 	"net/url"
 )

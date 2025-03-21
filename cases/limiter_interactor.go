@@ -1,7 +1,7 @@
 package cases
 
 import (
-	"adeptus-limitarius/entities"
+	"dreadnought/entities"
 )
 
 type LimiterInteractor struct {

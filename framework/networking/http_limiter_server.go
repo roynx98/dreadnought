@@ -1,7 +1,7 @@
 package networking
 
 import (
-	"adeptus-limitarius/adapters"
+	"dreadnought/adapters"
 	"fmt"
 	"log"
 	"net/http"

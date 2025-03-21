@@ -4,10 +4,10 @@
 package framework
 
 import (
-	"adeptus-limitarius/adapters"
-	"adeptus-limitarius/cases"
-	"adeptus-limitarius/framework/networking"
-	"adeptus-limitarius/framework/strategies"
+	"dreadnought/adapters"
+	"dreadnought/cases"
+	"dreadnought/framework/networking"
+	"dreadnought/framework/strategies"
 
 	"github.com/google/wire"
 )

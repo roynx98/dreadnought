@@ -1,4 +1,4 @@
-module adeptus-limitarius
+module dreadnought
 
 go 1.24.1
 

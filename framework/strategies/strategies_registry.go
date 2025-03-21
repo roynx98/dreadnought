@@ -1,8 +1,8 @@
 package strategies
 
 import (
-	"adeptus-limitarius/cases"
-	"adeptus-limitarius/entities"
+	"dreadnought/cases"
+	"dreadnought/entities"
 	"sync/atomic"
 )
 

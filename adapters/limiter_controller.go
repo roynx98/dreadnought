@@ -1,8 +1,8 @@
 package adapters
 
 import (
-	"adeptus-limitarius/cases"
-	"adeptus-limitarius/entities"
+	"dreadnought/cases"
+	"dreadnought/entities"
 )
 
 type LimiterControllerRequest struct {
