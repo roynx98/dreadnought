@@ -2,7 +2,6 @@ package networking
 
 import (
 	"dreadnought/adapters"
-	"fmt"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -19,7 +18,6 @@ func (server HttpLimiterServer) Start(targetHost *url.URL) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		r.Host = targetHost.Host
 
-		fmt.Println("Request received")
 		limiterRequest := adapters.LimiterControllerRequest{IP: r.RemoteAddr}
 
 		shouldLimit := server.limiterController.HandleRequest(limiterRequest)

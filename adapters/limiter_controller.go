@@ -9,16 +9,12 @@ type LimiterControllerRequest struct {
 	IP string
 }
 
-type LimiterControllerResponse struct {
-	Code int
-}
-
 type LimiterController struct {
 	interactor cases.LimiterInteractor
 }
 
-func (controller LimiterController) HandleRequest(LimiterControllerRequest) bool {
-	rule := entities.LimitRule{IP: "1.1.1.1", Strategy: "bucket"}
+func (controller LimiterController) HandleRequest(request LimiterControllerRequest) bool {
+	rule := entities.LimitRule{IP: request.IP, Strategy: "bucket"}
 
 	return controller.interactor.ShouldLimit(rule)
 }
