@@ -2,6 +2,7 @@ package networking
 
 import (
 	"dreadnought/adapters"
+	"dreadnought/framework/config"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -10,13 +11,16 @@ import (
 
 type HttpLimiterServer struct {
 	limiterController adapters.LimiterController
+	configManager     config.ConfigManager
 }
 
-func (server HttpLimiterServer) Start(targetHost *url.URL) {
-	proxy := httputil.NewSingleHostReverseProxy(targetHost)
+func (server HttpLimiterServer) Start() {
+	target, _ := url.Parse(server.configManager.Config.TargetHost)
+
+	proxy := httputil.NewSingleHostReverseProxy(target)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		r.Host = targetHost.Host
+		r.Host = target.Host
 
 		limiterRequest := adapters.LimiterControllerRequest{IP: r.RemoteAddr}
 
@@ -29,11 +33,12 @@ func (server HttpLimiterServer) Start(targetHost *url.URL) {
 
 		proxy.ServeHTTP(w, r)
 	})
+	port := server.configManager.Config.Port
 
-	log.Println("Reverse proxy running on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Println("Reverse proxy running on :" + port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
-func ProvideLimiterServer(limiterController adapters.LimiterController) HttpLimiterServer {
-	return HttpLimiterServer{limiterController: limiterController}
+func ProvideLimiterServer(configManager config.ConfigManager, limiterController adapters.LimiterController) HttpLimiterServer {
+	return HttpLimiterServer{configManager: configManager, limiterController: limiterController}
 }

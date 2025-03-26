@@ -6,8 +6,9 @@ package framework
 import (
 	"dreadnought/adapters"
 	"dreadnought/cases"
+	"dreadnought/framework/config"
+	"dreadnought/framework/limiters"
 	"dreadnought/framework/networking"
-	"dreadnought/framework/strategies"
 
 	"github.com/google/wire"
 )
@@ -15,7 +16,8 @@ import (
 func InitializeApp() App {
 	wire.Build(
 		ProvideApp,
-		strategies.ProvideStrategiesRegistry,
+		config.ProvideConfigManager,
+		limiters.ProvideStrategiesRegistry,
 		adapters.ProvideLimiterController,
 		networking.ProvideLimiterServer,
 		cases.ProvideLimiterInteractor,

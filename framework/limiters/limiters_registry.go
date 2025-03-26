@@ -1,4 +1,4 @@
-package strategies
+package limiters
 
 import (
 	"dreadnought/cases"
@@ -6,11 +6,11 @@ import (
 	"sync/atomic"
 )
 
-type StrategiesRegistry struct {
+type LimitersRegistry struct {
 	mediator cases.LimiterMediator
 }
 
-func (registry StrategiesRegistry) Register() {
+func (registry LimitersRegistry) Register() {
 	registry.mediator.RegisterCreationHandler("bucket", func() entities.Limiter {
 		const maxTokens = 2
 		var currentTokens atomic.Int32
@@ -19,6 +19,6 @@ func (registry StrategiesRegistry) Register() {
 	})
 }
 
-func ProvideStrategiesRegistry(mediator cases.LimiterMediator) StrategiesRegistry {
-	return StrategiesRegistry{mediator: mediator}
+func ProvideStrategiesRegistry(mediator cases.LimiterMediator) LimitersRegistry {
+	return LimitersRegistry{mediator: mediator}
 }

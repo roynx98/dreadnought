@@ -9,18 +9,20 @@ package framework
 import (
 	"dreadnought/adapters"
 	"dreadnought/cases"
+	"dreadnought/framework/config"
+	"dreadnought/framework/limiters"
 	"dreadnought/framework/networking"
-	"dreadnought/framework/strategies"
 )
 
 // Injectors from wire.go:
 
 func InitializeApp() App {
+	configManager := config.ProvideConfigManager()
 	limiterMediator := cases.ProvideLimiterMediator()
 	limiterInteractor := cases.ProvideLimiterInteractor(limiterMediator)
 	limiterController := adapters.ProvideLimiterController(limiterInteractor)
-	httpLimiterServer := networking.ProvideLimiterServer(limiterController)
-	strategiesRegistry := strategies.ProvideStrategiesRegistry(limiterMediator)
-	app := ProvideApp(httpLimiterServer, strategiesRegistry)
+	httpLimiterServer := networking.ProvideLimiterServer(configManager, limiterController)
+	limitersRegistry := limiters.ProvideStrategiesRegistry(limiterMediator)
+	app := ProvideApp(httpLimiterServer, limitersRegistry, configManager)
 	return app
 }

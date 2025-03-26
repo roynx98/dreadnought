@@ -1,30 +1,32 @@
 package framework
 
 import (
+	"dreadnought/framework/config"
+	"dreadnought/framework/limiters"
 	"dreadnought/framework/networking"
-	"dreadnought/framework/strategies"
-	"log"
-	"net/url"
 )
 
 type App struct {
-	server             networking.LimiterServer
-	strategiesRegistry strategies.StrategiesRegistry
+	server           networking.LimiterServer
+	limitersRegistry limiters.LimitersRegistry
+	configManager    config.ConfigManager
 }
 
 func (app App) Start() {
-	targetURL := "http://localhost:3000/"
+	app.configManager.Load()
 
-	target, err := url.Parse(targetURL)
-	if err != nil {
-		log.Fatal(err)
-	}
+	app.limitersRegistry.Register()
 
-	app.strategiesRegistry.Register()
-
-	app.server.Start(target)
+	app.server.Start()
 }
 
-func ProvideApp(limiterServer networking.LimiterServer, strategiesRegistry strategies.StrategiesRegistry) App {
-	return App{server: limiterServer, strategiesRegistry: strategiesRegistry}
+func ProvideApp(
+	limiterServer networking.LimiterServer,
+	strategiesRegistry limiters.LimitersRegistry,
+	configManager config.ConfigManager) App {
+	return App{
+		server:           limiterServer,
+		limitersRegistry: strategiesRegistry,
+		configManager:    configManager,
+	}
 }
