@@ -1,21 +1,38 @@
 package config
 
-import "fmt"
-
-type Config struct {
+type ConfigDTO struct {
 	TargetHost string
 	Port       string
+	File       string
 }
 
 type ConfigManager struct {
-	Config
+	Config  ConfigDTO
+	loaders []ConfigLoader
 }
 
 func (configManager ConfigManager) Load() {
-	fmt.Println("Load config")
+	for _, loader := range configManager.loaders {
+		overrideConfig := loader.Load()
+		mergeConfigs(&configManager.Config, overrideConfig)
+	}
+}
+
+func mergeConfigs(base *ConfigDTO, override ConfigDTO) {
+	if override.TargetHost != "" {
+		base.TargetHost = override.TargetHost
+	}
+	if override.Port != "" {
+		base.Port = override.Port
+	}
+	if override.File != "" {
+		base.File = override.File
+	}
 }
 
 func ProvideConfigManager() ConfigManager {
-	config := Config{TargetHost: "https://pokeapi.co/", Port: "8080"}
-	return ConfigManager{Config: config}
+	loaders := []ConfigLoader{FlagLoader{}}
+	config := ConfigDTO{}
+
+	return ConfigManager{Config: config, loaders: loaders}
 }

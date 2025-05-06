@@ -1,5 +1,5 @@
 package config
 
 type ConfigLoader interface {
-	load()
+	Load() ConfigDTO
 }
