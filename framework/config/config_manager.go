@@ -7,14 +7,14 @@ type ConfigDTO struct {
 }
 
 type ConfigManager struct {
-	Config  ConfigDTO
+	Config  *ConfigDTO
 	loaders []ConfigLoader
 }
 
 func (configManager ConfigManager) Load() {
 	for _, loader := range configManager.loaders {
 		overrideConfig := loader.Load()
-		mergeConfigs(&configManager.Config, overrideConfig)
+		mergeConfigs(configManager.Config, overrideConfig)
 	}
 }
 
@@ -33,6 +33,5 @@ func mergeConfigs(base *ConfigDTO, override ConfigDTO) {
 func ProvideConfigManager() ConfigManager {
 	loaders := []ConfigLoader{FlagLoader{}}
 	config := ConfigDTO{}
-
-	return ConfigManager{Config: config, loaders: loaders}
+	return ConfigManager{Config: &config, loaders: loaders}
 }

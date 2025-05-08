@@ -22,7 +22,7 @@ func InitializeApp() App {
 	limiterInteractor := cases.ProvideLimiterInteractor(limiterMediator)
 	limiterController := adapters.ProvideLimiterController(limiterInteractor)
 	httpLimiterServer := networking.ProvideLimiterServer(configManager, limiterController)
-	limitersRegistry := limiters.ProvideStrategiesRegistry(limiterMediator)
+	limitersRegistry := limiters.ProvideStrategiesRegistry(limiterMediator, configManager)
 	app := ProvideApp(httpLimiterServer, limitersRegistry, configManager)
 	return app
 }

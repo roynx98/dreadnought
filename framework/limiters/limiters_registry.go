@@ -3,11 +3,13 @@ package limiters
 import (
 	"dreadnought/cases"
 	"dreadnought/entities"
+	"dreadnought/framework/config"
 	"sync/atomic"
 )
 
 type LimitersRegistry struct {
-	mediator cases.LimiterMediator
+	mediator      cases.LimiterMediator
+	configManager config.ConfigManager
 }
 
 func (registry LimitersRegistry) Register() {
@@ -19,6 +21,6 @@ func (registry LimitersRegistry) Register() {
 	})
 }
 
-func ProvideStrategiesRegistry(mediator cases.LimiterMediator) LimitersRegistry {
-	return LimitersRegistry{mediator: mediator}
+func ProvideStrategiesRegistry(mediator cases.LimiterMediator, configManager config.ConfigManager) LimitersRegistry {
+	return LimitersRegistry{mediator: mediator, configManager: configManager}
 }
